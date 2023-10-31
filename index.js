@@ -30,6 +30,8 @@ function createCard(x, y, type) {
 
   newCard.style.left = `${x}px`;
   newCard.style.top = `${y}px`;
+  newCard.style.minHeight = `10rem`;
+  newCard.style.minWidth = `12rem`;
 
   newCard.appendChild(createCardHeader(type, cardId));
   newCard.appendChild(createCardBody(type));
@@ -49,7 +51,8 @@ function createCardHeader(title, cardId) {
   deleteBtn.onclick = () => {
     document.getElementById(cardId).remove();
   };
-  deleteBtn.classList.add("bi", "bi-trash3-fill");
+  deleteBtn.classList.add("bi", "bi-trash3-fill", "text-danger");
+  deleteBtn.style.cursor = "pointer";
 
   cardHeader.appendChild(cardTitle);
   cardHeader.appendChild(deleteBtn);
@@ -60,5 +63,6 @@ function createCardHeader(title, cardId) {
 function createCardBody(type) {
   const cardBody = document.createElement(type);
   cardBody.classList.add("card-body", "px-3");
+  cardBody.contentEditable = "true";
   return cardBody;
 }
