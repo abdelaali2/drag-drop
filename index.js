@@ -1,13 +1,14 @@
 const BODY = document.querySelector("body");
 const showSideNavBtn = document.querySelector("#showSideNavBtn");
+const sideNav = document.querySelector("#mySidenav");
 
 function openNav() {
-  document.getElementById("mySidenav").style.width = "150px";
+  sideNav.style.width = "150px";
   showSideNavBtn.classList.add("d-none");
 }
 
 function closeNav() {
-  document.getElementById("mySidenav").style.width = "0";
+  sideNav.style.width = "0";
   showSideNavBtn.classList.remove("d-none");
 }
 
