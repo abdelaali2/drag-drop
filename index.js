@@ -21,23 +21,32 @@ function createNewElement(ev, type) {
 function createCard(x, y, type) {
   const newCard = document.createElement("div");
   const cardId = Math.random().toString();
-  newCard.id = cardId;
-  newCard.classList.add("card", "text-center", "position-absolute");
-  newCard.draggable = true;
-  newCard.ondragend = (ev) => {
-    newCard.style.left = `${ev.clientX}px`;
-    newCard.style.top = `${ev.clientY}px`;
-  };
-
-  newCard.style.left = `${x}px`;
-  newCard.style.top = `${y}px`;
-  newCard.style.minHeight = `10rem`;
-  newCard.style.minWidth = `12rem`;
 
   newCard.appendChild(createCardHeader(type, cardId));
   newCard.appendChild(createCardBody(type));
 
-  return newCard;
+  const finalCard = attachControlBtns(newCard, cardId);
+
+  finalCard.id = cardId;
+  finalCard.classList.add(
+    "position-absolute",
+    "d-flex",
+    "flex-row",
+    "align-items-center"
+  );
+  newCard.draggable = true;
+  newCard.ondragend = (ev) => {
+    finalCard.style.left = `${ev.clientX}px`;
+    finalCard.style.top = `${ev.clientY}px`;
+  };
+
+  finalCard.style.left = `${x}px`;
+  finalCard.style.top = `${y}px`;
+  newCard.style.minHeight = `10rem`;
+  newCard.style.minWidth = `12rem`;
+  newCard.classList.add("card", "text-center", "mx-1");
+
+  return finalCard;
 }
 
 function createCardHeader(title, cardId) {
@@ -69,4 +78,25 @@ function createCardBody(type) {
     cardBody.dataset.input = cardBody.innerText || cardBody.value;
   });
   return cardBody;
+}
+
+function attachControlBtns(card) {
+  const targetElem = card.querySelector(".card-body");
+  const beforeControlBtn = document.createElement("button");
+  beforeControlBtn.classList.add("ctrlBtn");
+  beforeControlBtn.onclick = () => {
+    console.log(targetElem.dataset.input || "No Input Yet");
+  };
+
+  const afterControlBtn = document.createElement("button");
+  afterControlBtn.classList.add("ctrlBtn");
+  afterControlBtn.onclick = () => {
+    console.log(targetElem.dataset.output || "No Output Yet");
+  };
+
+  const finalCard = document.createElement("div");
+  finalCard.appendChild(beforeControlBtn);
+  finalCard.appendChild(card);
+  finalCard.appendChild(afterControlBtn);
+  return finalCard;
 }
