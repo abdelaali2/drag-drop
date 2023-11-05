@@ -64,6 +64,9 @@ function createCardHeader(title, cardId) {
 function createCardBody(type) {
   const cardBody = document.createElement(type);
   cardBody.classList.add("card-body", "px-3");
-  cardBody.contentEditable = "true";
+  cardBody.contentEditable = true;
+  cardBody.addEventListener("input", () => {
+    cardBody.dataset.input = cardBody.innerText || cardBody.value;
+  });
   return cardBody;
 }
