@@ -1,3 +1,7 @@
+*{
+  box-sizing: border-box;
+}
+
 .sidenav {
   height: 100%;
   width: 0px;
@@ -17,10 +21,14 @@
 }
 
 .ctrlBtn {
-  width: 20px;
-  height: 20px;
-  border-radius: 7.5px;
+  width: 15px;
+  height: 15px;
+  border-radius: 5px;
   border: 1px solid #000;
-  padding: 5px;
   background: #ffffff;
+}
+
+.ctrlBtn:hover{
+  border: 2px solid #2c4ceb;
+  cursor: crosshair;
 }
