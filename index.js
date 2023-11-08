@@ -35,6 +35,7 @@ function createCard(x, y, type) {
   );
   finalCard.style.left = `${x}px`;
   finalCard.style.top = `${y}px`;
+  finalCard.style.zIndex = 10;
 
   newCard.draggable = true;
   newCard.ondragend = (ev) => {
@@ -88,10 +89,8 @@ function attachControlBtns(card) {
   beforeControlBtn.classList.add("ctrlBtn");
   beforeControlBtn.onclick = () => {
     const input = linkingFeature.getData();
-    const coords = {
-      x: beforeControlBtn.offsetLeft,
-      y: beforeControlBtn.offsetTop,
-    };
+    const { left, top } = beforeControlBtn.getBoundingClientRect();
+    const coords = { x: left, y: top };
     if (input) {
       targetElem.dataset.input = input;
       targetElem.innerText = input;
@@ -105,10 +104,8 @@ function attachControlBtns(card) {
   afterControlBtn.classList.add("ctrlBtn");
   afterControlBtn.onclick = () => {
     const output = targetElem.dataset.output;
-    const coords = {
-      x: afterControlBtn.offsetLeft,
-      y: afterControlBtn.offsetTop,
-    };
+    const { left, top } = afterControlBtn.getBoundingClientRect();
+    const coords = { x: left, y: top };
     if (output) {
       linkingFeature.setData(output);
     }
@@ -149,26 +146,37 @@ const linkingFeature = {
 
 function createLinkingLine() {
   const line = document.createElement("div");
-  const point1 = linkingFeature.getPointA();
-  console.log("point1", point1);
-  const point2 = linkingFeature.getPointB();
-  console.log("point2", point2);
+  const pointA = linkingFeature.getPointA();
+  const pointB = linkingFeature.getPointB();
 
-  if (!Object.keys(point1).length || !Object.keys(point2).length) return;
+  if (!pointA || !pointB) return;
+
+  console.log("pointA", pointA);
+  console.log("pointB", pointB);
 
   const distance = Math.sqrt(
-    Math.pow(point2.x - point1.x, 2) + Math.pow(point2.y - point1.y, 2)
+    Math.pow(pointB.x - pointA.x, 2) + Math.pow(pointB.y - pointA.y, 2)
   );
 
-  const angle = Math.atan2(point2.y - point1.y, point2.x - point1.x);
+  const angle = Math.atan2(pointB.y - pointA.y, pointB.x - pointA.x);
 
   line.style.position = "absolute";
-  line.style.zIndex = 10;
-  line.style.left = point1.x + "px";
-  line.style.top = point1.y + "px";
-  line.style.width = distance + "px";
+  line.style.zIndex = 5;
+  line.style.left = `${Math.min(pointA.x, pointB.x)}px`;
+  line.style.top = `${Math.max(pointA.y, pointB.y)}px`;
+  line.style.width = `${distance}px`;
   line.style.transform = `rotate(${angle}rad)`;
+  line.style.border = "2px solid black";
 
-  line.style.border = "1px solid black";
+  line.ondblclick = () => line.remove();
+  line.onmouseenter = () => {
+    line.style.border = "3px solid #2c4ceb";
+  };
+  line.onmouseleave = () => {
+    line.style.border = "2px solid black";
+  };
+
+  console.log("line.getBoundingClientRect()", line.getBoundingClientRect());
+
   BODY.appendChild(line);
 }
